@@ -33,7 +33,7 @@ function Login() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>Kauvery Flavors 🔐</h2>
+        <h2 style={styles.title}>Kauvery Flavors </h2>
         <p style={styles.subtitle}>Login to continue</p>
 
         <input
