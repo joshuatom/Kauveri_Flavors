@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, Link, Navigate } from "react-router-dom";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "./firebase"; 
 import Signup from "./Signup";
 import Shop from "./shop";
 import { styles } from "./theme";
