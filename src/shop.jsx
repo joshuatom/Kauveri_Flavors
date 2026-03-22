@@ -15,12 +15,18 @@ function Shop() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [cartLoaded, setCartLoaded] = useState(false); // ✅ NEW
+  const [cartLoaded, setCartLoaded] = useState(false); // ✅ control save timing
 
   // 🔐 Track logged-in user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
+      // ✅ IMPORTANT: Reset states on logout
+      if (!currentUser) {
+        setCart([]);
+        setCartLoaded(false);
+      }
     });
 
     return () => unsubscribe();
@@ -32,6 +38,8 @@ function Shop() {
 
     const fetchCart = async () => {
       try {
+        setCartLoaded(false); // ✅ block saving while loading
+
         const docRef = doc(db, "carts", user.uid);
         const docSnap = await getDoc(docRef);
 
@@ -41,7 +49,7 @@ function Shop() {
           setCart([]);
         }
 
-        setCartLoaded(true); // ✅ IMPORTANT
+        setCartLoaded(true); // ✅ allow saving AFTER load
       } catch (error) {
         console.error("Error loading cart:", error);
       }
@@ -50,7 +58,7 @@ function Shop() {
     fetchCart();
   }, [user]);
 
-  // 📤 SAVE CART to Firebase (only after load)
+  // 📤 SAVE CART to Firebase (safe)
   useEffect(() => {
     if (!user || !cartLoaded) return; // 🚫 prevent overwrite
 
@@ -75,8 +83,7 @@ function Shop() {
 
   // ❌ Remove item
   const removeFromCart = (index) => {
-    const updatedCart = cart.filter((_, i) => i !== index);
-    setCart(updatedCart);
+    setCart((prev) => prev.filter((_, i) => i !== index));
   };
 
   // 🧹 Clear cart
@@ -117,7 +124,7 @@ function Shop() {
         <CartModal
           cartItems={cart}
           removeFromCart={removeFromCart}
-          setCart={setCart} // ✅ IMPORTANT for clear/remove inside modal
+          setCart={setCart} // ✅ used inside modal
           onClose={() => setIsCartOpen(false)}
           onPlaceOrder={handlePlaceOrder}
         />
