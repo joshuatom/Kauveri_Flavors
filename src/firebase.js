@@ -1,5 +1,4 @@
 // src/firebase.js
-
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";          // ✅ ADD
 import { getFirestore } from "firebase/firestore"; // ✅ ADD
