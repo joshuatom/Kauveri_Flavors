@@ -78,7 +78,7 @@ function Shop() {
   // ➕ Add item
   const addToCart = (product) => {
     setCart((prev) => [...prev, product]);
-    alert(`Added ${product.name} to cart!`);
+    
   };
 
   // ❌ Remove item

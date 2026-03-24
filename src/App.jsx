@@ -23,7 +23,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login Successful!");
+      
       navigate("/shop");
     } catch (error) {
       alert(error.message);
